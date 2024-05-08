@@ -36,6 +36,7 @@ const db = getFirestore();
     methods: ['GET', 'POST'],
     credentials :true  // Allow only specified HTTP methods
   };*/
+  app.use(cors())
   app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
@@ -55,7 +56,7 @@ const db = getFirestore();
     next();
 });
 app.use(express.json())
-app.use(cors())
+
 app.use(cookieParser())
 // app.use((req, res, next) => {
 //     res.header('Access-Control-Allow-Origin', '*'); // Replace '*' with specific origins if needed
