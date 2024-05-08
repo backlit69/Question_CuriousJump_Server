@@ -78,7 +78,7 @@ app.use(cookieParser())
 
 const verifyUser = (req,res,next) =>{
     const token = req.cookies.token;
-    console.log(req.cookies);
+    console.log(req);
     if(!token){
         return res.json(" Token Unavailable")
     }
