@@ -71,10 +71,10 @@ app.use(cookieParser())
 //     // res.header('Access-Control-Allow-Credentials', true);
 //     next();
 //   });
-app.get("/",(req,res) =>{
-    res.setHeader("Access-Control-Allow-Credentials","true");
-    res.send("API is running");
-  });
+// app.get("/",(req,res) =>{
+//     res.setHeader("Access-Control-Allow-Credentials","true");
+//     res.send("API is running");
+//   });
 
 const verifyUser = (req,res,next) =>{
     
