@@ -38,6 +38,7 @@ const db = getFirestore();
   };*/
   const corsOptions = {
     origin: "https://question-curious-jump-client.vercel.app",
+    // origin: "https://question-curious-jump-client.vercel.app",
     credentials: true,
 
 }
@@ -77,14 +78,14 @@ app.use(cookieParser())
 //   });
 
 const verifyUser = (req,res,next) =>{
-    const token = req.cookies.token;
+    const auth = req.cookies.auth;
     console.log(req);
-    if(!token){
-        return res.json(" Token Unavailable")
+    if(!auth){
+        return res.json({success:false ,message : "Token Unavailable"})
     }
     else{
-        jwt.verify(token,process.env.JWTSECRET,(err,decode)=>{
-            if(err) return res.json(" Wrong Token")
+        jwt.verify(auth,process.env.JWTSECRET,(err,decode)=>{
+            if(err) return res.json({success:false ,message : "Wrong Token"})
                 req.user = decode
                 next()
         })
@@ -108,18 +109,25 @@ app.get("/",verifyUser, async(req,res)=>{
     
 })
 
+app.post("/logout",async(req,res)=>{
+    res
+  .status(200)  //OK
+  .clearCookie("auth")
+  .send("Cookie deleted from user's browser")
+})
+
 
 app.post("/login",async(req,res)=>{
     console.log(req.body);
     console.log(process.env.EMAIL);
     if(req.body.email == process.env.EMAIL  && req.body.password == process.env.PASSWORD){
-        const token = jwt.sign({email:req.body.email},process.env.JWTSECRET,{expiresIn:"1d"})
+        const auth = jwt.sign({email:req.body.email},process.env.JWTSECRET,{expiresIn:"1d"})
         const options = {
             expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
             httpOnly: true,
           };
 
-        res.cookie("token",token,options).json({
+        res.cookie("auth",auth,options).json({
             success: true,
             user : "admin",
             message: `User Login Success`,
