@@ -113,9 +113,13 @@ app.post("/login",async(req,res)=>{
     console.log(req.body);
     console.log(process.env.EMAIL);
     if(req.body.email == process.env.EMAIL  && req.body.password == process.env.PASSWORD){
-        const token = jwt.sign({email:req.body.email},process.env.JWTSECRET,{expiresIn:"1d"})
-        res.cookie("token",token);
-        res.status(200).json({
+        const token = jwt.sign({email:req.body.email},process.env.JWTSECRET,{expiresIn:"24h"})
+        const options = {
+            expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+            httpOnly: true,
+          };
+
+        res.cookie("token",token,options).json({
             success: true,
             user : "admin",
             message: `User Login Success`,
