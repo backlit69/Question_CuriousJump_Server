@@ -37,49 +37,19 @@ const db = getFirestore();
     credentials :true  // Allow only specified HTTP methods
   };*/
   const corsOptions = {
-    origin: "https://question-curious-jump-client.vercel.app",
     // origin: "https://question-curious-jump-client.vercel.app",
+    origin: "http://localhost:3000",
     credentials: true,
 
 }
 app.use(cors(corsOptions));
-  /*app.use(cors())
-  app.use(function (req, res, next) {
-
-    // Website you wish to allow to connect
-    res.setHeader("Access-Control-Allow-Origin", "https://question-curious-jump-client.vercel.app");
-
-    // Request methods you wish to allow
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
-
-    // Request headers you wish to allow
-    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type");
-
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-
-    // Pass to next layer of middleware
-    next();
-});*/
 app.use(express.json())
-
 app.use(cookieParser())
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*'); // Replace '*' with specific origins if needed
-//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//     // res.header('Access-Control-Allow-Credentials', true);
-//     next();
-//   });
-// app.get("/",(req,res) =>{
-//     res.setHeader("Access-Control-Allow-Credentials","true");
-//     res.send("API is running");
-//   });
 
 const verifyUser = (req,res,next) =>{
-    const auth = req.cookies.auth;
-    console.log(req);
+    console.log(req.body);
+    const auth = req.body.auth;
+    
     if(!auth){
         return res.json({success:false ,message : "Token Unavailable"})
     }
@@ -92,7 +62,7 @@ const verifyUser = (req,res,next) =>{
     }
 }
 
-app.get("/",verifyUser, async(req,res)=>{
+app.post("/auth",verifyUser, async(req,res)=>{
     if(req.user.email==process.env.EMAIL){
         res.json({
             success:true,
@@ -127,11 +97,12 @@ app.post("/login",async(req,res)=>{
             httpOnly: true,
           };
 
-        res.cookie("auth",auth,options).json({
+        res.json({
             success: true,
             user : "admin",
             message: `User Login Success`,
-          });
+            auth : auth
+          }).status(200);
     }
     else{
         return res
