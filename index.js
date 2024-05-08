@@ -40,7 +40,7 @@ app.use(express.json())
 //app.use(cors(corsOptions))
 app.use(cookieParser())
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'https://question-curious-jump-client.vercel.app/'); // Replace '*' with specific origins if needed
+    res.header('Access-Control-Allow-Origin', 'https://question-curious-jump-client.vercel.app/*'); // Replace '*' with specific origins if needed
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     next();
@@ -132,21 +132,7 @@ app.post("/question",async(req,res)=>{
     catch(err){
         console.log(err);
     }
-    
-    // const collectionRef = collection(db,collectionName)
-    // const q = (collectionRef)
-    
-    // const docSnap = await getDoc(q);
-    // console.log(docSnap);
-    // res.status(200).json({
-    //     message:"question added"
-    //   });
-    // return res;
-
 })
-
-
-
 
 app.listen(4000,()=>console.log("Up and Running at port 4000"))
 
