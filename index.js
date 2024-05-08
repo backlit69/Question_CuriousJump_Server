@@ -6,24 +6,7 @@ const {getFirestore,doc,setDoc,getDoc,deleteDoc} = require('firebase/firestore')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 dotenv.config();
-app.use(function (req, res, next) {
 
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
-
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
-
-    // Pass to next layer of middleware
-    next();
-});
 const serviceAccount = {
     "type": process.env.TYPE,
     "projectId": process.env.PROJECTID ,
@@ -53,7 +36,24 @@ const db = getFirestore();
     methods: ['GET', 'POST'],
     credentials :true  // Allow only specified HTTP methods
   };*/
+  app.use(function (req, res, next) {
 
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'https://question-curious-jump-client.vercel.app');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
 app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
