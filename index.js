@@ -37,7 +37,7 @@ const db = getFirestore();
     credentials :true  // Allow only specified HTTP methods
   };*/
   const corsOptions = {
-    origin: 'http://localhost:4200',
+    origin: "https://question-curious-jump-client.vercel.app",
     credentials: true,
 
 }
