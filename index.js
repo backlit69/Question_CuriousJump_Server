@@ -36,7 +36,13 @@ const db = getFirestore();
     methods: ['GET', 'POST'],
     credentials :true  // Allow only specified HTTP methods
   };*/
-  app.use(cors())
+  const corsOptions = {
+    origin: 'http://localhost:4200',
+    credentials: true,
+
+}
+app.use(cors(corsOptions));
+  /*app.use(cors())
   app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
@@ -54,7 +60,7 @@ const db = getFirestore();
 
     // Pass to next layer of middleware
     next();
-});
+});*/
 app.use(express.json())
 
 app.use(cookieParser())
