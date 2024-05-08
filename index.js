@@ -94,12 +94,13 @@ const verifyUser = (req,res,next) =>{
 app.get("/",verifyUser, async(req,res)=>{
     if(req.user.email==process.env.EMAIL){
         res.json({
-            Success:true,
+            success:true,
             message:"Valid Token"
         });
     }
     else{
         res.json({
+            success:false,
             message:"Invalid Token"
         })
     }
@@ -159,11 +160,22 @@ app.post("/question",async(req,res)=>{
         }
         await deleteDoc(docRef);
         await setDoc(docRef, newData);
+        res.json({
+            success: true,
+            message: "Question added",
+          })
+          .status(200);
     }
     catch(err){
         console.log(err);
+        res.json({
+            success: false,
+            message: "Can't add question",
+          })
+          .status(300);
     }
-    console.log(res)
+    
+    
 })
 
 app.listen(4000,()=>console.log("Up and Running at port 4000"))
