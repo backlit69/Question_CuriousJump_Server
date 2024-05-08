@@ -113,7 +113,7 @@ app.post("/login",async(req,res)=>{
     console.log(req.body);
     console.log(process.env.EMAIL);
     if(req.body.email == process.env.EMAIL  && req.body.password == process.env.PASSWORD){
-        const token = jwt.sign({email:req.body.email},process.env.JWTSECRET,{expiresIn:"24h"})
+        const token = jwt.sign({email:req.body.email},process.env.JWTSECRET,{expiresIn:"1d"})
         const options = {
             expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
             httpOnly: true,
