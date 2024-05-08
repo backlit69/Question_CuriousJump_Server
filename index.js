@@ -77,8 +77,8 @@ app.use(cookieParser())
 //   });
 
 const verifyUser = (req,res,next) =>{
-    
     const token = req.cookies.token;
+    console.log(req.cookies);
     if(!token){
         return res.json(" Token Unavailable")
     }
@@ -129,7 +129,6 @@ app.post("/login",async(req,res)=>{
         })
         .status(200);
     }
-    console.log(res)
 })
 
 
