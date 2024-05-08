@@ -30,14 +30,14 @@ const db = getFirestore();
 
 
  const app = express();
-//  const corsOptions = {
-//     origin: ['http://localhost:3000',process.env.ALLOWED,'https://question-curious-jump-client.vercel.app/'], // Allow requests from this origin
-//     methods: ['GET', 'POST'],
-//     credentials :true  // Allow only specified HTTP methods
-//   };
+ const corsOptions = {
+    origin: ['http://localhost:3000',process.env.ALLOWED,'https://question-curious-jump-client.vercel.app/'], // Allow requests from this origin
+    methods: ['GET', 'POST'],
+    credentials :true  // Allow only specified HTTP methods
+  };
 
 app.use(express.json())
-//app.use(cors(corsOptions))
+app.use(cors(corsOptions))
 app.use(cookieParser())
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*'); // Replace '*' with specific origins if needed
@@ -81,6 +81,10 @@ app.get("/",verifyUser, async(req,res)=>{
 app.post("/login",async(req,res)=>{
     console.log(req.body);
     console.log(process.env.EMAIL);
+    res.header('Access-Control-Allow-Origin', '*'); // Replace '*' with specific origins if needed
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Credentials', true);
     if(req.body.email == process.env.EMAIL  && req.body.password == process.env.PASSWORD){
         const token = jwt.sign({email:req.body.email},process.env.JWTSECRET,{expiresIn:"1d"})
         res.cookie("token",token);
@@ -105,6 +109,10 @@ app.post("/login",async(req,res)=>{
 app.post("/question",async(req,res)=>{
     const data = req.body;
     const documentId = data.type+data.level;
+    res.header('Access-Control-Allow-Origin', '*'); // Replace '*' with specific origins if needed
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Credentials', true);
     try{
         const docRef = doc(db,collectionName,documentId)
         let old_data = await getDoc(docRef);
