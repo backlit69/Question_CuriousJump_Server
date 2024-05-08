@@ -30,15 +30,21 @@ const db = getFirestore();
 
 
  const app = express();
- const corsOptions = {
-    origin: ['http://localhost:3000',process.env.ALLOWED,'https://question-curious-jump-client.vercel.app'], // Allow requests from this origin
-    methods: ['GET', 'POST'],
-    credentials :true  // Allow only specified HTTP methods
-  };
+//  const corsOptions = {
+//     origin: ['http://localhost:3000',process.env.ALLOWED,'https://question-curious-jump-client.vercel.app/'], // Allow requests from this origin
+//     methods: ['GET', 'POST'],
+//     credentials :true  // Allow only specified HTTP methods
+//   };
 
 app.use(express.json())
-app.use(cors(corsOptions))
+//app.use(cors(corsOptions))
 app.use(cookieParser())
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://question-curious-jump-client.vercel.app/'); // Replace '*' with specific origins if needed
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    next();
+  });
 
 const verifyUser = (req,res,next) =>{
     
