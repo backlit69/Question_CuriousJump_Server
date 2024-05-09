@@ -38,7 +38,7 @@ const db = getFirestore();
   };*/
   const corsOptions = {
     origin: "https://question-curious-jump-client.vercel.app",
-    // origin: "http://localhost:3000",
+    //origin: "http://localhost:3000",
     credentials: true,
 
 }
@@ -114,6 +114,50 @@ app.post("/login",async(req,res)=>{
     }
 })
 
+// app.post("/question",async(req,res)=>{
+//     const data = req.body;
+//     const documentId = data.type+data.level;
+//     try{
+//         const docRef = doc(db,collectionName,documentId)
+//         let old_data = await getDoc(docRef);
+//         old_data = old_data.data();
+//         var questions = old_data.questions;
+//         console.log(questions);
+//         var am = []
+        
+//         var question = {
+//                 text : data.text,
+//                 options:[data.option1,data.option2,data.option3,data.option4],
+//                 correctAnswer : data.correctAnswer
+//             }
+//         if(questions===undefined){
+//             questions=[]
+//         }
+//         questions.push(question)
+//         var newData = {
+//             questions:questions,
+//             type:data.type,
+//             level:data.level
+//         }
+//         await deleteDoc(docRef);
+//         await setDoc(docRef, newData);
+//         res.json({
+//             success: true,
+//             message: "Question added",
+//           })
+//           .status(200);
+//     }
+//     catch(err){
+//         console.log(err);
+//         res.json({
+//             success: false,
+//             message: "Can't add question",
+//           })
+//           .status(300);
+//     }
+    
+    
+// })
 
 app.post("/question",async(req,res)=>{
     const data = req.body;
@@ -124,22 +168,37 @@ app.post("/question",async(req,res)=>{
         old_data = old_data.data();
         var questions = old_data.questions;
         console.log(questions);
-        var am = []
-        
-        var question = {
-                text : data.question,
-                options:[data.option1,data.option2,data.option3,data.option4],
-                correctAnswer : data.correctAnswer
-            }
         if(questions===undefined){
             questions=[]
         }
+        console.log(questions);
+
+        if(data.count==1){
+            var question = {
+                text : data.text,
+                options:[data.option1,data.option2,data.option3,data.option4],
+                correctAnswer : data.correctAnswer
+            }
+        
         questions.push(question)
+        }
+        else{
+            data.questions.map((element)=>{
+                questions.push({
+                    text : element.question,
+                    options:element.options,
+                    correctAnswer : element.correctAnswer
+                })
+            })
+
+        }
+        
         var newData = {
             questions:questions,
             type:data.type,
             level:data.level
         }
+        console.log(newData)
         await deleteDoc(docRef);
         await setDoc(docRef, newData);
         res.json({
@@ -147,6 +206,7 @@ app.post("/question",async(req,res)=>{
             message: "Question added",
           })
           .status(200);
+        console.log(newData)
     }
     catch(err){
         console.log(err);
